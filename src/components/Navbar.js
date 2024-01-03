@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-// import Badge from 'react-bootstrap/Badge';
 import Modal from '../Model';
 import Cart from '../pages/Cart';
 import { useCart } from '../components/contextReducer';
@@ -20,18 +19,21 @@ export default function Navbar() {
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
+          {/* Replace text with logo image */}
           <Link className="navbar-brand" to="#">
-            <span style={{ fontStyle: 'italic', fontWeight: 'bold', fontSize: '28px' }}>Aaryan Jewells</span>
-          
+            <img src="https://res.cloudinary.com/di9tuayhz/image/upload/v1704022831/dbppgtkljjyhphefvnaq.png" alt="Aaryan Jewells Logo" style={{ height: '80px', width: '120px' }} />
           </Link>
+
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
+
           <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
             <ul className="navbar-nav">
               <li className="nav-item">
                 <Link className="nav-link active fs-5" aria-current="page" to="/" style={{ fontSize: '16px', fontWeight: 'bold' }}>Home</Link>
               </li>
+
               {localStorage.getItem('authToken') ? (
                 <li className="nav-item">
                   <Link className="nav-link active fs-5" aria-current="page" to="/myOrderes" style={{ fontSize: '16px', fontWeight: 'bold' }}>My Orders</Link>
@@ -46,13 +48,12 @@ export default function Navbar() {
               </div>
             ) : (
               <div className="d-flex ms-auto">
-               <div className='btn bg-white text-success mx-2' onClick={() => setCartView(true)}>
-  {/* My Cart{" "} */}
-  <i className="fas fa-shopping-cart" style={{ color: 'green', fontSize: '1.5rem ', marginRight:'3px '}}>{cartItemCount}</i>
-</div>
-
+                <div className='btn bg-white text-success mx-2' onClick={() => setCartView(true)}>
+                  <i className="fas fa-shopping-cart" style={{ color: 'green', fontSize: '1.5rem', marginRight: '3px' }}>{cartItemCount}</i>
+                </div>
 
                 {cartView ? <Modal onClose={() => setCartView(false)}><Cart /></Modal> : null}
+                
                 <div className="btn btn-outline-danger ms-2" onClick={handleLogout} style={{ backgroundColor: 'white', color: 'red', border: '1px solid red' }}>Logout</div>
               </div>
             )}
