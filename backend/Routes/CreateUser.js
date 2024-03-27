@@ -10,8 +10,7 @@ router.post(
     // Validation middleware using express-validator
     body('name').notEmpty().withMessage('Name is required'),
     body('email').isEmail().withMessage('Invalid email format'),
-    body('password').notEmpty().withMessage('Password is required'),
-    body('Address').notEmpty().withMessage('Address is required'),
+    body('password').notEmpty().withMessage('Password is required')
   ],
   async (req, res) => {
     // Check for validation errors
@@ -31,7 +30,7 @@ router.post(
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
-        Address: req.body.Address,
+        
       });
 
       res.status(201).json({ message: 'User created successfully' });

@@ -22,7 +22,7 @@ export default function Cart() {
     console.error("User email is missing.");
     return;
   }
-    const response = await fetch("http://localhost:5000/users/orderData", {
+    const response = await fetch('http://localhost:5000/users/orderData', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

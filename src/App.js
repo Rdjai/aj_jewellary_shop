@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+// import './App.css';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import '../node_modules/bootstrap-dark-5/dist/css/bootstrap-dark.min.css'

@@ -1,7 +1,9 @@
+
+require("dotenv").config();
 const { validationResult } = require('express-validator');
 const mongoose = require('mongoose');
 
-const mongoURI = 'mongodb+srv://om123:Aaryan123@cluster1.anbxigv.mongodb.net/QuickBite?retryWrites=true&w=majority';
+const mongoURI = process.env.MONGO_URL;
 
 const mongoDB = async () => {
   try {
@@ -17,7 +19,7 @@ const mongoDB = async () => {
     const category_data = await fetched_category.find({}).toArray();
     const food_data = await fetched_food.find({}).toArray();
 
-    // Use the fetched data or do other operations here
+    // // Use the fetched data or do other operations here
     global.items = food_data;
     global.foodcategory = category_data;
 

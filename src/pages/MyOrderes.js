@@ -36,18 +36,16 @@ export default function MyOrder() {
   useEffect(() => {
     console.log('Order Data:', orderData);
   
-    const total = orderData.reduce((acc, item) => {
-      return (
-        acc +
-        item.reduce((itemAcc, arrayData) => {
-          return (
-            itemAcc +
-            (arrayData.price ? parseFloat(arrayData.price) : 0) * (arrayData.qty ? parseFloat(arrayData.qty) : 1)
-          );
-        }, 0)
-      );
-    }, 0);
-  
+    // Calculate total value of orders
+    let total = 0;
+    orderData.forEach(item => {
+      if (Array.isArray(item)) {
+        item.forEach(arrayData => {
+          total += (parseFloat(arrayData.price) || 0) * (parseFloat(arrayData.qty) || 1);
+        });
+      }
+    });
+
     console.log('Total Value:', total);
   
     setTotalValue(total);
@@ -66,7 +64,7 @@ export default function MyOrder() {
           {orderData.length !== 0 &&
             orderData.map((item, index) => (
               <div key={index}>
-                {item.map((arrayData, arrayIndex) => (
+                {Array.isArray(item) && item.map((arrayData, arrayIndex) => (
                   <div key={arrayIndex}>
                     {arrayData.Order_date ? (
                       <div className="m-auto mt-5">

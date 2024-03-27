@@ -1,22 +1,25 @@
-import React, {useState} from 'react';
-import {Link} from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link,useNavigate } from 'react-router-dom';
 
-export default function Signup () {
-  const [credentials, setCredentials] = useState ({
-    name:'',
-    email:'',
-    password:'',
-    geolocation:'',
+function Signup() {
+  const navigate = useNavigate();
+  const [credentials, setCredentials] = useState({
+    name: '',
+    email: '',
+    password: '',
+    geolocation: '',
   });
-
-  const handleChange =(event)=> {
-    // const {name, value} = e.target;
-    setCredentials ({...credentials,[event.target.name]:event.target.value});
+ 
+  const handleChange = (event) => {
+    setCredentials({
+      ...credentials,
+      [event.target.name]: event.target.value,
+    });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     try {
       const response = await fetch('http://localhost:5000/users/CreateUser', {
         method: 'POST',
@@ -30,11 +33,12 @@ export default function Signup () {
           Address: credentials.geolocation,
         }),
       });
-  
+
       const jsonResponse = await response.json();
-  
+
       if (response.ok) {
         console.log('User registered successfully!');
+        navigate('/login');
         // Optionally, you can redirect the user to a login page or another route.
       } else {
         console.error('Error registering user:', jsonResponse.error);
@@ -45,13 +49,14 @@ export default function Signup () {
       alert('An error occurred. Please try again later.');
     }
   };
-  
 
   return (
-    <div className="container">
-      <form onSubmit={handleSubmit}>
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <div className="login-container p-4 rounded shadow" style={{ width: '400px', background: 'linear-gradient(45deg, #3498db, #8e44ad)' }}>
+        <h2 className="text-center mb-4 text-white">Sign Up</h2>
+
         <div className="mb-3">
-          <label htmlFor="name" className="form-label">
+          <label htmlFor="name" className="form-label text-white">
             Name
           </label>
           <input
@@ -62,8 +67,9 @@ export default function Signup () {
             onChange={handleChange}
           />
         </div>
+
         <div className="mb-3">
-          <label htmlFor="email" className="form-label">
+          <label htmlFor="email" className="form-label text-white">
             Email address
           </label>
           <input
@@ -73,10 +79,10 @@ export default function Signup () {
             value={credentials.email}
             onChange={handleChange}
           />
-          
         </div>
+
         <div className="mb-3">
-          <label htmlFor="password" className="form-label">
+          <label htmlFor="password" className="form-label text-white">
             Password
           </label>
           <input
@@ -87,8 +93,9 @@ export default function Signup () {
             onChange={handleChange}
           />
         </div>
+
         <div className="mb-3">
-          <label htmlFor="address" className="form-label">
+          <label htmlFor="address" className="form-label text-white">
             Address
           </label>
           <input
@@ -100,11 +107,16 @@ export default function Signup () {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary btn-block" onClick={handleSubmit}>
           Submit
         </button>
-      </form>
-      <Link to="/login">Already have an account? Login here.</Link>
+
+        <p className="text-center mt-3">
+          Already have an account? <Link to="/login" className="btn-link text-white">Login here</Link>
+        </p>
+      </div>
     </div>
   );
 }
+
+export default Signup;
