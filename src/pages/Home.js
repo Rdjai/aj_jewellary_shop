@@ -13,7 +13,7 @@ export default function Home() {
 
   const loadData = async () => {
     try {
-      const response = await fetch('http://localhost:5000/users/foodData', {
+      const response = await fetch('https://jewellaryappbackend-1.onrender.com/users/foodData', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

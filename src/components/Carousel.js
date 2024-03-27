@@ -29,7 +29,7 @@ export default function Carousel({ onSearch }) {
           </div>
           <div className="carousel-item active">
             <img
-              src="https://source.unsplash.com/random/900x350/?neckles"
+              src="https://source.unsplash.com/random/900x350/?diamonds"
               className="d-block w-100"
               style={{ height: '100%', objectFit: 'contain', filter: 'brightness(50%)' }}
               alt="..."
@@ -37,7 +37,7 @@ export default function Carousel({ onSearch }) {
           </div>
           <div className="carousel-item">
             <img
-              src="https://source.unsplash.com/random/900x350/?rings"
+              src="https://source.unsplash.com/random/900x350/?gold"
               className="d-block w-100"
               style={{ height: '100%', objectFit: 'contain !important', filter: 'brightness(50%)' }}
               alt="..."
@@ -45,7 +45,7 @@ export default function Carousel({ onSearch }) {
           </div>
           <div className="carousel-item">
             <img
-              src="https://source.unsplash.com/random/900x350/?diamonds"
+              src="https://source.unsplash.com/random/900x350/?bride"
               className="d-block w-100"
               style={{ height: '100%', objectFit: 'contain', filter: 'brightness(50%)' }}
               alt="..."

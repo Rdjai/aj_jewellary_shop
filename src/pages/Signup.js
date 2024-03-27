@@ -21,7 +21,7 @@ function Signup() {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:5000/users/CreateUser', {
+      const response = await fetch('https://jewellaryappbackend-1.onrender.com/users/CreateUser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

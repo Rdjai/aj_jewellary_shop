@@ -8,7 +8,7 @@ export default function MyOrder() {
 
   const fetchMyOrder = async () => {
     try {
-      const response = await fetch('http://localhost:5000/users/myOrderes', {
+      const response = await fetch('https://jewellaryappbackend-1.onrender.com/users/myOrderes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
