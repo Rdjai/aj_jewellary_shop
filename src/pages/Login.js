@@ -17,7 +17,7 @@ function LoginForm() {
     event.preventDefault();
 
     try {
-      const response = await fetch('https://jewellaryappbackend-1.onrender.com/users/LoginUser', {
+      const response = await fetch('http://localhost:5000/users/LoginUser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

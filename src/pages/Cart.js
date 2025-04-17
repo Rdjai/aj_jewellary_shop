@@ -17,12 +17,12 @@ export default function Cart() {
   const handleCheckOut = async () => {
     const userEmail = localStorage.getItem("userEmail");
     // console.log("User Email:", userEmail);
-     
-  if (!userEmail) {
-    console.error("User email is missing.");
-    return;
-  }
-    const response = await fetch('https://jewellaryappbackend-1.onrender.com/users/orderData', {
+
+    if (!userEmail) {
+      console.error("User email is missing.");
+      return;
+    }
+    const response = await fetch('http://localhost:5000/users/orderData', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -39,7 +39,7 @@ export default function Cart() {
     }
   };
 
-  const totalPrice = data.reduce((total,food) => total + food.price, 0);
+  const totalPrice = data.reduce((total, food) => total + food.price, 0);
 
   return (
     <div>
@@ -65,7 +65,7 @@ export default function Cart() {
                 <td>{food.price}</td>
                 <td>
                   <button type="button" className="btn p-0" onClick={() => { dispatch({ type: "REMOVE", index: index }) }}>
-                  <i class="fa fa-trash" aria-hidden="true"></i>
+                    <i class="fa fa-trash" aria-hidden="true"></i>
                   </button>
                 </td>
               </tr>

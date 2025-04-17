@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link,useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Signup() {
   const navigate = useNavigate();
@@ -9,7 +9,7 @@ function Signup() {
     password: '',
     geolocation: '',
   });
- 
+
   const handleChange = (event) => {
     setCredentials({
       ...credentials,
@@ -21,7 +21,7 @@ function Signup() {
     event.preventDefault();
 
     try {
-      const response = await fetch('https://jewellaryappbackend-1.onrender.com/users/CreateUser', {
+      const response = await fetch('http://localhost:5000/users/CreateUser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

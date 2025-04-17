@@ -8,7 +8,7 @@ export default function MyOrder() {
 
   const fetchMyOrder = async () => {
     try {
-      const response = await fetch('https://jewellaryappbackend-1.onrender.com/users/myOrderes', {
+      const response = await fetch('http://localhost:5000/users/myOrderes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ export default function MyOrder() {
 
   useEffect(() => {
     console.log('Order Data:', orderData);
-  
+
     // Calculate total value of orders
     let total = 0;
     orderData.forEach(item => {
@@ -47,11 +47,11 @@ export default function MyOrder() {
     });
 
     console.log('Total Value:', total);
-  
+
     setTotalValue(total);
   }, [orderData]);
-  
-  
+
+
   return (
     <div>
       <div>

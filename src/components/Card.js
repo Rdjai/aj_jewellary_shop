@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatchCart, useCart } from './contextReducer';
+import { Heart, ShoppingBag } from 'lucide-react';
 
-const CardComponent = ({ cardWidth = '100%', allitems, options }) => {
-  const dispatch = useDispatchCart();
-  const data = useCart();
-  const [totalPrice, setTotalPrice] = useState(0);
+const Card = ({ allitems, options }) => {
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState(options ? Object.keys(options[0])[0] : "");
-  const [selectedOption] = useState(options ? options[0] : options[0]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [selectedOption] = useState(options ? options[0] : null);
+  const [isWishlisted, setIsWishlisted] = useState(false);
 
   useEffect(() => {
     if (selectedOption) {
@@ -17,83 +16,99 @@ const CardComponent = ({ cardWidth = '100%', allitems, options }) => {
     }
   }, [quantity, size, selectedOption]);
 
-  const handleQuantityChange = (e) => {
-    setQuantity(Number(e.target.value));
-  };
-
-  const handleAddToCart = async () => {
-    let food = data.find((item) => item._id === allitems._id);
-
-    if (food) {
-      if (food.size === size) {
-        await dispatch({ type: "UPDATE", _id: allitems._id, price: totalPrice, qty: quantity });
-      } else {
-        await dispatch({ type: "ADD", _id: allitems._id, name: allitems.name, price: totalPrice, qty: quantity, size: size });
-      }
-    } else {
-      await dispatch({
-        type: 'ADD',
-        _id: allitems._id,
-        name: allitems.name,
-        qty: quantity,
-        size: size,
-        price: totalPrice,
-        img: allitems.img,
-      });
-    }
-    console.log(data);
+  const handleAddToCart = () => {
+    console.log('Added to cart:', {
+      item: allitems.name,
+      quantity,
+      size,
+      totalPrice,
+    });
   };
 
   return (
-    <div className="card" style={{ width: cardWidth, borderRadius: '10px', fontSize: '0.9rem' }}>
-      <img
-        className="card-img-top"
-        src={allitems.img}
-        alt=""
-        style={{ width: '100%', height: '200px', objectFit: 'cover' }}
-      />
+    <div className="bg-white rounded-xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] overflow-hidden">
+      <div className="relative group">
+        <img
+          src={allitems.img}
+          alt={allitems.name}
+          className="w-full h-72 object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+        <button
+          onClick={() => setIsWishlisted(!isWishlisted)}
+          className="absolute top-4 right-4 h-8 w-8 flex items-center justify-center rounded-full bg-white/90 backdrop-blur-sm shadow-sm transition-transform hover:scale-110 active:scale-95"
+        >
+          <Heart
+            className={`h-4 w-4 ${isWishlisted ? 'fill-red-500 stroke-red-500' : 'stroke-gray-600'}`}
+          />
+        </button>
+      </div>
 
-      <div className="card-body">
-        <h6 className="card-title" style={{ fontSize: '1.2rem' }}>{allitems.name}</h6>
+      <div className="p-5">
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold text-gray-900 mb-1">
+            {allitems.name}
+          </h3>
+          <div className="text-sm text-gray-500">Handcrafted Excellence</div>
+        </div>
 
-        <div className='container mt-2'>
-          <div className="d-flex align-items-center">
-            <select
-              className='m-2 h-100 bg-success rounded'
-              style={{ marginRight: '10px', fontSize: '0.8rem' }}
-              value={quantity}
-              onChange={handleQuantityChange}
-            >
-              {[1, 2, 3, 4, 5].map((qty) => (
-                <option key={qty} value={qty}>
-                  {qty}
-                </option>
-              ))}
-            </select>
-            <select
-              className='m-2 h-100 bg-success rounded'
-              style={{ marginRight: '10px', fontSize: '0.8rem' }}
-              value={size}
-              onChange={(e) => setSize(e.target.value)}
-            >
-              {options && options[0] && Object.keys(options[0]).map((data) => (
-                <option key={data} value={data}>
-                  {data}
-                </option>
-              ))}
-            </select>
-            <div className="m-1" style={{ fontSize: '.9rem' }}>Total price ₹{totalPrice}</div>
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="relative flex-1">
+              <select
+                value={size}
+                onChange={(e) => setSize(e.target.value)}
+                className="w-full appearance-none rounded-lg border border-gray-200 bg-white pl-3 pr-8 py-2.5 text-sm font-medium text-gray-900 outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900/10"
+              >
+                {options && options[0] && Object.keys(options[0]).map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute right-2.5 top-2.5 h-5 w-5 text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+                </svg>
+              </div>
+            </div>
+
+            <div className="relative w-24">
+              <select
+                value={quantity}
+                onChange={(e) => setQuantity(Number(e.target.value))}
+                className="w-full appearance-none rounded-lg border border-gray-200 bg-white pl-3 pr-8 py-2.5 text-sm font-medium text-gray-900 outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900/10"
+              >
+                {[1, 2, 3, 4, 5].map((num) => (
+                  <option key={num} value={num}>
+                    {num}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute right-2.5 top-2.5 h-5 w-5 text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+                </svg>
+              </div>
+            </div>
           </div>
-          <hr></hr>
-          <div>
-            <button className="btn btn-secondary bg-success text-dark" onClick={handleAddToCart}>
-              Add to cart
+
+          <div className="flex items-center justify-between pt-1">
+            <div className="text-2xl font-semibold text-gray-900">
+              ₹{totalPrice.toLocaleString()}
+            </div>
+            <button
+              onClick={handleAddToCart}
+              className="inline-flex items-center gap-2 rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-gray-800 active:bg-gray-950"
+            >
+              <ShoppingBag className="h-4 w-4" />
+              Add to bag
             </button>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default CardComponent;
+export default Card;

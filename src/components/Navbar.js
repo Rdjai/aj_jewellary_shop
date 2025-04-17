@@ -1,65 +1,114 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Modal from '../Model';
-import Cart from '../pages/Cart';
-import { useCart } from '../components/contextReducer';
+import { Menu, X, ShoppingBag, User, Search, Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-export default function Navbar() {
-  const data = useCart();
-  const [cartView, setCartView] = useState(false);
-  const navigate = useNavigate();
-  const cartItemCount = data.length;
+function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    navigate('/');
-  };
-  
   return (
-    <div>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="container-fluid">
-          {/* Replace text with logo image */}
-          <Link className="navbar-brand" to="#">
-            <img src="https://res.cloudinary.com/di9tuayhz/image/upload/v1704022831/dbppgtkljjyhphefvnaq.png" alt="Aaryan Jewells Logo" style={{ height: '80px', width: '120px' }} />
-          </Link>
+    <div className="bg-white">
+      <nav className="border-b border-neutral-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo and Brand */}
+            <div className="flex-shrink-0 flex items-center">
+              <span className="text-2xl font-serif text-neutral-900">Aj Jewellary</span>
+            </div>
 
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center space-x-8">
+              <Link to="/" className="text-neutral-600 hover:text-neutral-900 transition-colors">Collections</Link>
+              <Link to="/rings" className="text-neutral-600 hover:text-neutral-900 transition-colors">Rings</Link>
+              <Link to="/necklaces" className="text-neutral-600 hover:text-neutral-900 transition-colors">Necklaces</Link>
+              <Link to="/earrings" className="text-neutral-600 hover:text-neutral-900 transition-colors">Earrings</Link>
+              <Link to="/bracelets" className="text-neutral-600 hover:text-neutral-900 transition-colors">Bracelets</Link>
+            </div>
 
-          <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <Link className="nav-link active fs-5" aria-current="page" to="/" style={{ fontSize: '16px', fontWeight: 'bold' }}>Home</Link>
-              </li>
-
-              {localStorage.getItem('authToken') ? (
-                <li className="nav-item">
-                  <Link className="nav-link active fs-5" aria-current="page" to="/myOrderes" style={{ fontSize: '16px', fontWeight: 'bold' }}>My Orders</Link>
-                </li>
-              ) : null}
-            </ul>
-
-            {!localStorage.getItem('authToken') ? (
-              <div className="d-flex ms-auto">
-                <Link className="btn btn-primary ms-2" to="/login">Login</Link>
-                <Link className="btn btn-primary ms-2" to="/signup">Signup</Link>
+            {/* Search Bar - Desktop */}
+            <div className="hidden lg:flex flex-1 max-w-lg mx-8">
+              <div className="relative w-full">
+                <Search className="h-5 w-5 text-neutral-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+                <input
+                  type="text"
+                  placeholder="Search jewelry..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 bg-neutral-50 border border-neutral-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-transparent"
+                />
               </div>
-            ) : (
-              <div className="d-flex ms-auto">
-                <div className='btn bg-white text-success mx-2' onClick={() => setCartView(true)}>
-                  <i className="fas fa-shopping-cart" style={{ color: 'green', fontSize: '1.5rem', marginRight: '3px' }}>{cartItemCount}</i>
-                </div>
+            </div>
 
-                {cartView ? <Modal onClose={() => setCartView(false)}><Cart /></Modal> : null}
-                
-                <div className="btn btn-outline-danger ms-2" onClick={handleLogout} style={{ backgroundColor: 'white', color: 'red', border: '1px solid red' }}>Logout</div>
-              </div>
-            )}
+            {/* Icons */}
+            <div className="hidden lg:flex items-center space-x-4">
+              <button className="p-2 hover:bg-neutral-50 rounded-full transition-colors">
+                <Heart className="w-5 h-5 text-neutral-600" />
+              </button>
+              <button className="p-2 hover:bg-neutral-50 rounded-full transition-colors">
+                <ShoppingBag className="w-5 h-5 text-neutral-600" />
+              </button>
+              <button className="p-2 hover:bg-neutral-50 rounded-full transition-colors">
+                <User className="w-5 h-5 text-neutral-600" />
+              </button>
+            </div>
+
+            {/* Mobile menu button */}
+            <div className="lg:hidden flex items-center space-x-4">
+              <button className="p-2 hover:bg-neutral-50 rounded-full transition-colors">
+                <ShoppingBag className="w-5 h-5 text-neutral-600" />
+              </button>
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="p-2 rounded-full hover:bg-neutral-50 transition-colors"
+              >
+                {isMenuOpen ? (
+                  <X className="w-6 h-6 text-neutral-600" />
+                ) : (
+                  <Menu className="w-6 h-6 text-neutral-600" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="lg:hidden bg-white border-t border-neutral-200">
+            {/* Mobile Search */}
+            <div className="p-4 border-b border-neutral-200">
+              <div className="relative">
+                <Search className="h-5 w-5 text-neutral-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+                <input
+                  type="text"
+                  placeholder="Search jewelry..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 bg-neutral-50 border border-neutral-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+            <div className="py-2">
+              <Link to="/" className="block px-4 py-3 text-neutral-600 hover:bg-neutral-50">Collections</Link>
+              <Link to="/rings" className="block px-4 py-3 text-neutral-600 hover:bg-neutral-50">Rings</Link>
+              <Link to="/necklaces" className="block px-4 py-3 text-neutral-600 hover:bg-neutral-50">Necklaces</Link>
+              <Link to="/earrings" className="block px-4 py-3 text-neutral-600 hover:bg-neutral-50">Earrings</Link>
+              <Link to="/bracelets" className="block px-4 py-3 text-neutral-600 hover:bg-neutral-50">Bracelets</Link>
+              <div className="px-4 py-3 flex items-center space-x-4 border-t border-neutral-200">
+                <button className="flex items-center text-neutral-600 hover:text-neutral-900">
+                  <Heart className="w-5 h-5 mr-2" />
+                  Wishlist
+                </button>
+                <button className="flex items-center text-neutral-600 hover:text-neutral-900">
+                  <User className="w-5 h-5 mr-2" />
+                  Account
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </nav>
     </div>
   );
 }
+
+export default Navbar;

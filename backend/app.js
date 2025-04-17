@@ -6,7 +6,7 @@ const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
 const path = require('path');
 const app = express();
-const port = process.env.PORT||4000;
+const port = process.env.PORT || 4000;
 
 mongoDB();
 

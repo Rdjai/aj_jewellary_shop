@@ -29,7 +29,7 @@ const mongoDB = async () => {
 
   } catch (error) {
     console.error('Error connecting to MongoDB:', error);
-  } 
+  }
 };
 
 module.exports = mongoDB;
