@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, ShoppingBag } from 'lucide-react';
+import { Heart, ShoppingBag, Check } from 'lucide-react';
+import { useCart } from './contextReducer';
 
 const Card = ({ allitems, options }) => {
   const [quantity, setQuantity] = useState(1);
@@ -7,6 +8,9 @@ const Card = ({ allitems, options }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectedOption] = useState(options ? options[0] : null);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
+
+  const { addToCart } = useCart();
 
   useEffect(() => {
     if (selectedOption) {
@@ -17,13 +21,27 @@ const Card = ({ allitems, options }) => {
   }, [quantity, size, selectedOption]);
 
   const handleAddToCart = () => {
-    console.log('Added to cart:', {
-      item: allitems.name,
+    const cartItem = {
+      id: allitems._id || Math.random().toString(36).substr(2, 9),
+      name: allitems.name,
+      img: allitems.img,
       quantity,
       size,
       totalPrice,
-    });
+      unitPrice: selectedOption[size],
+    };
+
+    addToCart(cartItem);
+    setIsAddedToCart(true);
+
+    setTimeout(() => {
+      setIsAddedToCart(false);
+    }, 2000);
   };
+
+  if (!allitems || !options) {
+    return null;
+  }
 
   return (
     <div className="bg-white rounded-xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] overflow-hidden">
@@ -60,7 +78,7 @@ const Card = ({ allitems, options }) => {
                 onChange={(e) => setSize(e.target.value)}
                 className="w-full appearance-none rounded-lg border border-gray-200 bg-white pl-3 pr-8 py-2.5 text-sm font-medium text-gray-900 outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900/10"
               >
-                {options && options[0] && Object.keys(options[0]).map((option) => (
+                {options[0] && Object.keys(options[0]).map((option) => (
                   <option key={option} value={option}>
                     {option}
                   </option>
@@ -99,10 +117,23 @@ const Card = ({ allitems, options }) => {
             </div>
             <button
               onClick={handleAddToCart}
-              className="inline-flex items-center gap-2 rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-gray-800 active:bg-gray-950"
+              disabled={isAddedToCart}
+              className={`inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-all ${isAddedToCart
+                ? 'bg-green-500 text-white'
+                : 'bg-gray-900 text-white hover:bg-gray-800 active:bg-gray-950'
+                }`}
             >
-              <ShoppingBag className="h-4 w-4" />
-              Add to bag
+              {isAddedToCart ? (
+                <>
+                  <Check className="h-4 w-4" />
+                  Added
+                </>
+              ) : (
+                <>
+                  <ShoppingBag className="h-4 w-4" />
+                  Add to bag
+                </>
+              )}
             </button>
           </div>
         </div>

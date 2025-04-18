@@ -3,7 +3,7 @@ require("dotenv").config();
 const { validationResult } = require('express-validator');
 const mongoose = require('mongoose');
 
-const mongoURI = process.env.MONGO_URL;
+const mongoURI = process.env.LOCAL_MONGO;
 
 const mongoDB = async () => {
   try {

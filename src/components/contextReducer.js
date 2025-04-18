@@ -1,61 +1,45 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
-export const CartStateContext = createContext();
-export const CartDispatchContext = createContext();
+const CartContext = createContext(null);
 
-// Define the reducer function
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'ADD':
-      return [
-        ...state,
-        {
-          _id: action._id,
-          name: action.name,
-          qty: action.qty,
-          size: action.size,
-          price: action.price,
-          img: action.img
-        }
-      ];
-    case 'REMOVE':
-      let newArr = [...state];
-      newArr.splice(action.index, 1);
-      return newArr;
-    case 'UPDATE':
-      let arr = [...state];
-      arr = arr.map((food) => {
-        if (food._id === action._id) {
-          return {
-            ...food,
-            qty: parseInt(action.qty) + food.qty,
-            price: action.price + food.price
-          };
-        }
-        return food;
-      });
-      return arr;
-      case 'DROP':
-      let ar = [];
-      return ar;
-    default:
-      console.log('error in reducer');
-      return state;
-  }
-};
+export function CartProvider({ children }) {
+  const [cartItems, setCartItems] = useState([]);
 
-// Create the CartProvider component
-export const CartProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, []);
+  const addToCart = (item) => {
+    setCartItems(prevItems => [...prevItems, item]);
+  };
+
+  const removeFromCart = (itemId) => {
+    setCartItems(prevItems => prevItems.filter(item => item.id !== itemId));
+  };
+
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
+  const getCartTotal = () => {
+    return cartItems.reduce((total, item) => total + item.totalPrice, 0);
+  };
+
+  const value = {
+    cartItems,
+    addToCart,
+    removeFromCart,
+    clearCart,
+    getCartTotal
+  };
 
   return (
-    <CartStateContext.Provider value={state}>
-      <CartDispatchContext.Provider value={dispatch}>
-        {children}
-      </CartDispatchContext.Provider>
-    </CartStateContext.Provider>
+    <CartContext.Provider value={value}>
+      {children}
+    </CartContext.Provider>
   );
-};
+}
 
-export const useCart = () => useContext(CartStateContext);
-export const useDispatchCart = () => useContext(CartDispatchContext);
+export function useCart() {
+  const context = useContext(CartContext);
+  if (context === null) {
+    throw new Error('useCart must be used within a CartProvider');
+  }
+  return context;
+}

@@ -10,23 +10,23 @@ import {
 import Signup from './pages/Signup.js';
 import { CartProvider } from './components/contextReducer.js';
 import MyOrder from './pages/MyOrderes.js';
-// import Cart from './pages/Cart.js';
+import Cart from './pages/Cart.js';
 
 
 function App() {
   return (
     <CartProvider>
-      <div>
-        <Router>
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/signup' element={<Signup />} />
-            <Route path='/myOrderes' element={<MyOrder />} />
-            {/* <Route path='/signup' element={<Cart />} /> */}
-          </Routes>
-        </Router>
-      </div>
+
+      <Router>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<Signup />} />
+          <Route path='/myOrderes' element={<MyOrder />} />
+          <Route path='/cart' element={<Cart />} />
+        </Routes>
+      </Router>
+
     </CartProvider>
 
   );

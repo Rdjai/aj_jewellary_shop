@@ -30,7 +30,8 @@ router.post(
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
-        
+        Address: req.body.Address
+
       });
 
       res.status(201).json({ message: 'User created successfully' });
